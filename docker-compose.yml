@@ -1,16 +1,16 @@
 version: '2'
 services:
-  vcf2neo:
+  tree2neo:
     build: .
-    image: vcf2neo
-    container_name: vcf2neo
+    image: tree2neo
+    container_name: tree2neo
     environment:
       DB: db
     depends_on:
       - db
   db:
     image: neo4j:3.0.4
-    container_name: vcf2neo-db
+    container_name: tree2neo-db
     volumes_from:
       - dc:rw
     environment:
@@ -22,4 +22,4 @@ services:
       - dc
   dc:
       build: dc/
-      container_name: vcf2neo-dc
+      container_name: tree2neo-dc

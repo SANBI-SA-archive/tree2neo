@@ -8,9 +8,9 @@ import vcf
 from db import create_variant_set_nodes, create_call_set_nodes, create_variant_site_nodes
 
 
-class Vcf(object):
+class Tree(object):
     """
-    Handling VCF processing.
+    Handling Tree processing.
     """
 
     def __init__(self, vcf_dir=None):
