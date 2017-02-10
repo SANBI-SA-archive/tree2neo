@@ -1,12 +1,12 @@
-# **vcf2neo**
-A tool to import SnpEff produced vcf files to a Neo4j Graph database.
+# **tree2neo**
+A tool to import Tree files produced  by FastTree to a Neo4j Graph database.
 
 This tool does the following:
     
    * Starts up a Neo4j docker container
    * Downloads the reference [database](https://zenodo.org/record/252101#.WIHfgvF95hH) in the `/data` directory of the container
-   * Gets VCF files from a provided directory 
-   * Maps and loads the VCF data in Graph database
+   * Gets TREE files from a provided directory 
+   * Maps and loads the TREE data in Graph database
     
 
 ## Usage
@@ -14,8 +14,8 @@ This tool does the following:
 **Clone this repository:**
 
 ```
-$ git clone https://github.com/SANBI-SA/vcf2neo.git
-$ cd vcf2neo
+$ git clone https://github.com/SANBI-SA/tree2neo.git
+$ cd tree2neo
 ```
 
    * **Standalone :computer: :**
@@ -25,8 +25,8 @@ $ cd vcf2neo
         $ source envname/bin/activate
         $ pip install -r requirements.txt
         $ pip install --editable .
-        $ vcf2neo --help
-        $ vcf2neo init -d data/vcf data/db/data
+        $ tree2neo --help
+        $ tree2neo init -d data/tree data/db/data
         ```
    * **Using docker/docker-compose :whale: :**
       
