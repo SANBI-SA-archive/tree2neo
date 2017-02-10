@@ -293,3 +293,14 @@ class Call(GraphObject):
         self.ref_allele = ref_allele
         self.alt_allele = alt_allele
         self.gene = gene
+
+class Tree(GraphObject):
+    __primarykey__ = 'name'
+    name = Property()
+    data = Property()
+
+    has_var = RelatedTo("VariantSet", "HAS_VAR")
+
+    def __init__(self, name, data):
+        self.name = name
+        self.data = data

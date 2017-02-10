@@ -10,7 +10,7 @@ grequests==0.3.0
 pexpect==4.2.1
 ptyprocess==0.5.1
 py2neo==3.1.2
-PyVCF==0.6.8
+ete2==2.3.10
 requests==2.12.4
 requests-cache==0.4.13
 suds-jurko==0.6

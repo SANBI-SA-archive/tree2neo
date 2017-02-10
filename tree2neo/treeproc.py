@@ -4,46 +4,32 @@ Interface to handle VCF files
 import glob
 import time
 
-import vcf
-from db import create_variant_set_nodes, create_call_set_nodes, create_variant_site_nodes
+from db import create_tree_nodes
 
 
-class Tree(object):
+class FastTree(object):
     """
     Handling Tree processing.
     """
 
-    def __init__(self, vcf_dir=None):
-        self.vcf_dir = vcf_dir
+    def __init__(self, tree_dir=None):
+        self.tree_dir = tree_dir
 
     def process(self):
-        print("We have the following VCF files in directory ({}):\n".format(self.vcf_dir))
-        for vcf_file in glob.glob(self.vcf_dir + "/*.vcf"):
-            # TODO: Remove the two files from data
-            if 'Drug' not in str(vcf_file):
-                print(vcf_file)
-                print("Processing: {}!".format(vcf_file))
-                start = time.time()
-                vcf_reader = vcf.Reader(open(vcf_file, 'r'))
-                # TODO: Have a standard way of identifying variant_set_names
-                vcf_file_name = str(vcf_file).replace(str(self.vcf_dir) + "/", "")
-                # TODO: Let's use the file name for now
-                create_variant_set_nodes(set_name=vcf_file_name)
-                create_call_set_nodes(set_name=vcf_file_name)
-                self.get_variant_sites(vcf_reader, vcf_file_name)
-                end = time.time()
-                print("Processed {} in {}!".format(vcf_file_name.upper(), end - start))
-                time.sleep(2)
+        print("We have the following TREE files in directory ({}):\n".format(self.tree_dir))
+        for tree_file in glob.glob(self.tree_dir + "/*.nhx"):
+            start = time.time()
 
-    def get_variant_sites(self, vcf_reader=None, vcf_file_name=None):
-        for record in vcf_reader:
-            print("\n")
-            print(record)
-            annotation = self.get_variant_ann(record)
-            create_variant_site_nodes(record, annotation, vcf_file_name)
+            # read the file contents
+            with open(tree_file) as tree_f:
+                data_str = tree_f.read()
 
-    @staticmethod
-    def get_variant_ann(record=None):
-        ann = record.INFO['ANN'][0].split('|')
-        print(ann)
-        return ann
+            # TODO: Pass Tree File Name in the tool arguments
+            tree_file_name = str(tree_file).replace(str(self.tree_dir) + "/", "")
+
+            # TODO: Let's use the file name for now
+            create_tree_nodes(name=tree_file_name, data=data_str)
+
+            end = time.time()
+            print("Processed {} in {}!".format(tree_file_name.upper(), end - start))
+            time.sleep(2)
