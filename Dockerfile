@@ -20,4 +20,4 @@ RUN pip install -r /code/requirements.txt
 COPY . /code
 WORKDIR /code
 RUN pip install --editable .
-CMD ["tree2neo" ,"init", "-D", "/vcf"]
+CMD ["tree2neo" ,"init", "-D", "data"]
