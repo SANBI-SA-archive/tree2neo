@@ -294,7 +294,7 @@ class Call(GraphObject):
         self.alt_allele = alt_allele
         self.gene = gene
 
-class Tree(GraphObject):
+class FastTree(GraphObject):
     __primarykey__ = 'name'
     name = Property()
     data = Property()

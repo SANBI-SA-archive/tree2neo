@@ -1,7 +1,7 @@
 """
 Interface to the Neo4j Database
 """
-from combat_tb_model.model import VariantSet, CallSet, VariantSite, Call, Gene, Feature, Tree
+from combat_tb_model.model import VariantSet, CallSet, VariantSite, Call, Gene, Feature, FastTree
 
 from py2neo import Graph, getenv, watch
 
@@ -14,7 +14,7 @@ def create_tree_nodes(name, data):
     Create VariantSet Nodes
     :return:
     """
-    v_set = Tree(name=str(name), data=str(data))
+    v_set = FastTree(name=str(name), data=str(data))
     graph.create(v_set)
 
 def build_relationships():
@@ -22,7 +22,7 @@ def build_relationships():
     Build Relationships
     :return:
     """
-    t_sets = Tree.select(graph)
+    t_sets = FastTree.select(graph)
     v_sets = VariantSet.select(graph)
     for v_set in v_sets:
         for t_set in t_sets:
