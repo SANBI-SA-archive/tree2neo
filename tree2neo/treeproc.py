@@ -25,7 +25,8 @@ class FastTree(object):
                 data_str = tree_f.read()
 
             # TODO: Pass Tree File Name in the tool arguments
-            tree_file_name = str(tree_file).replace(str(self.tree_dir) + "/", "")
+            #tree_file_name = str(tree_file).replace(str(self.tree_dir) + "/", "")
+            tree_file_name = str(tree_file).rsplit('/', 1)[-1]
 
             # TODO: Let's use the file name for now
             create_tree_nodes(name=tree_file_name, data=data_str)
