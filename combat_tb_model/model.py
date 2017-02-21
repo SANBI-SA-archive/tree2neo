@@ -301,6 +301,7 @@ class FastTree(GraphObject):
 
     has_var = RelatedTo("VariantSet", "HAS_VAR")
 
-    def __init__(self, name, data):
+    def __init__(self, name, data, history_id):
         self.name = name
         self.data = data
+        self.history_id = history_id
