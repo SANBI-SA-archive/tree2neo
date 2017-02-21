@@ -298,6 +298,7 @@ class FastTree(GraphObject):
     __primarykey__ = 'name'
     name = Property()
     data = Property()
+    history_id = Property()
 
     has_var = RelatedTo("VariantSet", "HAS_VAR")
 
