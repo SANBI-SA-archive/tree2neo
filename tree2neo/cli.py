@@ -14,8 +14,8 @@ def cli():
 
 @cli.command()
 @click.argument('tree_dir', type=click.Path(exists=True, dir_okay=True), required=True)
-@click.argument('refdb_dir', type=click.Path(exists=True, dir_okay=True), required=False)
 @click.argument('history_id', type=str, required=True)
+@click.argument('refdb_dir', type=click.Path(exists=True, dir_okay=True), required=False)
 # When running tree2neo with Dockerfile/docker-compose, we don't want docker inside docker.
 @click.option('-d/-D', default=True, help='Run Neo4j docker container.')
 def init(tree_dir, d, history_id, refdb_dir=None):
