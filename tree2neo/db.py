@@ -1,7 +1,10 @@
 """
 Interface to the Neo4j Database
 """
-from combat_tb_model.model import VariantSet, CallSet, VariantSite, Call, Gene, Feature, FastTree
+from combat_tb_model.model.vcf import *
+from combat_tb_model.model.core import *
+from combat_tb_model.model.user import *
+from combat_tb_model.model.fasttree import *
 
 from py2neo import Graph, getenv, watch
 
