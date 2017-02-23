@@ -1,6 +1,7 @@
-from core import *
+from py2neo.ogm import GraphObject, Property, RelatedTo, RelatedFrom
 from user import *
-from fasttree import *
+
+
 # class Phenotype(GraphObject):
 #     __primarykey__ = 'type'
 #     # type {XDR, DR, MDR, SUS}
@@ -10,8 +11,6 @@ from fasttree import *
 # https://ga4gh-schemas.readthedocs.io/en/latest/api/variants.html
 # VariantSet = Phenotype
 # TODO: Dataset and ReferenceSet?
-
-
 class VariantSet(GraphObject):
     __primarykey__ = 'name'
     name = Property()
