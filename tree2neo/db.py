@@ -30,6 +30,6 @@ def build_relationships():
     for v_set in v_sets:
         for t_set in t_sets:
             # TODO: Find a better way to handle this.
-            if v_set.history_id == t_set.hisstory_id:
+            if v_set.history_id == t_set.history_id:
                 t_set.has_var.add(v_set)
                 graph.push(t_set)
