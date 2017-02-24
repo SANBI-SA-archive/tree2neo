@@ -4,7 +4,7 @@ Interface to handle VCF files
 import glob
 import time
 
-from db import create_tree_nodes
+from .db import create_tree_nodes
 
 
 class FastTree(object):
