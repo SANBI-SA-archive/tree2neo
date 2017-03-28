@@ -8,7 +8,7 @@ from combat_tb_model.model.fasttree import *
 
 from py2neo import Graph, getenv, watch
 
-graph = Graph(host=getenv("DB", "localhost"), http_port=7474, bolt=True, password=getenv("NEO4J_PASSWORD", ""))
+graph = Graph(host=getenv("DB", "thoba.sanbi.ac.za"), http_port=7474, bolt=True, password=getenv("NEO4J_PASSWORD", ""))
 watch("neo4j.bolt")
 
 
