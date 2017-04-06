@@ -1,7 +1,7 @@
 import click
-from db import build_relationships
-from docker import Docker
-from treeproc import FastTree
+from .db import build_relationships
+from .docker import Docker
+from .treeproc import FastTree
 
 
 @click.group()
