@@ -1,8 +1,12 @@
+import os
+import os.path
+from shutil import rmtree
+from tempfile import NamedTemporaryFile, tempdir
 import click
-from .db import build_relationships
+from .db import build_relationships, variants_to_fasta
 from .docker import Docker
 from .treeproc import FastTree
-
+from .galaxy import submit_fasttree_job, wait_on_output, fetch_output
 
 @click.group()
 def cli():
@@ -33,6 +37,37 @@ def init(tree_dir, d, history_id, refdb_dir=None):
     tree = FastTree(history_id, tree_dir=tree_dir)
     tree.process()
     build_relationships()
+
+
+@cli.command()
+@click.argument('email', type=str, required=True)
+@click.argument('vset_names', type=str, nargs=-1)
+@click.option('--outputdir', type=str)
+def tree_from_vsets(email, vset_names, outputdir):
+    dir_made = False
+    if outputdir is None:
+        outputdir = os.path.join(tempdir, 'ft_' + str(os.getpid()) + '_working')
+        os.mkdir(outputdir, 0o600)
+        dir_made = True
+    with NamedTemporaryFile(delete=False) as tmpfile:
+        snp_count = variants_to_fasta(variant_set_names=vset_names, fasta_file=tmpfile)
+        if snp_count > 0:
+            tmpfile.close()
+            history_name = ','.join(vset_names)
+            run_result = submit_fasttree_job(email=email, fasta_filename=tmpfile.name, history_name=history_name)
+            if run_result is not None:
+                if 'jobs' in run_result and len(run_result['jobs']) == 1:
+                    job_id = run_result['jobs'][0]['id']
+                    output_id = wait_on_output(email=email, job_id=job_id)
+                    if output_id is not None:
+                        output_filename = fetch_output(email, outputdir, output_id)
+                        if output_filename is not None:
+                            tree = FastTree(history_name, tree_dir=outputdir)
+                            tree.process()
+                            build_relationships()
+            os.remove(tmpfile.name)
+    if dir_made:
+        rmtree(outputdir)
 
 
 if __name__ == '__main__':

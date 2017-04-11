@@ -20,3 +20,5 @@ suds-jurko==0.6
 tqdm==4.10.0
 wrapt==1.10.8
 xmltodict==0.10.2
+biopython==1.68
+bioblend==0.8.0
