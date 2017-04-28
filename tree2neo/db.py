@@ -4,7 +4,7 @@ Interface to the Neo4j Database
 from tree2neo.combat_tb_model.model.core import *
 from tree2neo.combat_tb_model.model.vcfmodel import *
 from tree2neo.combat_tb_model.model.galaxyuser import *
-from tree2neo.combat_tb_model.model.fasttree import *
+
 
 from py2neo import Graph, getenv, watch
 from Bio.Seq import Seq
@@ -37,7 +37,7 @@ def build_relationships():
         for t_set in t_sets:
             # TODO: Find a better way to handle this.
             if v_set.history_id == t_set.history_id:
-                t_set.has_var.add(v_set)
+                t_set.from_variant_set.add(v_set)
                 graph.push(t_set)
 
 
