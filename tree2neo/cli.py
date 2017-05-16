@@ -1,7 +1,7 @@
 import os
 import os.path
 from shutil import rmtree
-from tempfile import NamedTemporaryFile, tempdir
+from tempfile import NamedTemporaryFile, gettempdir
 import click
 from .db import build_relationships, variants_to_fasta
 from .docker import Docker
@@ -42,7 +42,7 @@ def init(tree_dir, d, history_id, refdb_dir=None):
 def load_tree_from_vsets(email, history_ids, outputdir=None):
     dir_made = False
     if outputdir is None:
-        outputdir = os.path.join(tempdir, 'ft_' + str(os.getpid()) + '_working')
+        outputdir = os.path.join(gettempdir(), 'ft_' + str(os.getpid()) + '_working')
         os.mkdir(outputdir, 0o600)
         dir_made = True
     with NamedTemporaryFile(delete=False) as tmpfile:
