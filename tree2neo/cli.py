@@ -39,18 +39,14 @@ def init(tree_dir, d, history_id, refdb_dir=None):
     build_relationships()
 
 
-@cli.command()
-@click.argument('email', type=str, required=True)
-@click.argument('vset_names', type=str, nargs=-1)
-@click.option('--outputdir', type=str)
-def tree_from_vsets(email, vset_names, outputdir):
+def load_tree_from_vsets(email, history_ids, outputdir):
     dir_made = False
     if outputdir is None:
         outputdir = os.path.join(tempdir, 'ft_' + str(os.getpid()) + '_working')
         os.mkdir(outputdir, 0o600)
         dir_made = True
     with NamedTemporaryFile(delete=False) as tmpfile:
-        snp_count = variants_to_fasta(variant_set_names=vset_names, fasta_file=tmpfile)
+        snp_count = variants_to_fasta(history_ids=history_ids, fasta_file=tmpfile)
         if snp_count > 0:
             tmpfile.close()
             history_name = ','.join(vset_names)
@@ -68,6 +64,14 @@ def tree_from_vsets(email, vset_names, outputdir):
             os.remove(tmpfile.name)
     if dir_made:
         rmtree(outputdir)
+
+
+@cli.command()
+@click.argument('email', type=str, required=True)
+@click.argument('history_ids', type=str, nargs=-1)
+@click.option('--outputdir', type=str)
+def tree_from_vsets(email, history_ids, outputdir):
+    load_tree_from_vsets(email, history_ids, outputdir)
 
 
 if __name__ == '__main__':

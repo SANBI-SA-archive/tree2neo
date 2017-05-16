@@ -50,14 +50,14 @@ def get_galaxy_api_key(email):
         return user.user_key
 
 
-def variants_to_fasta(variant_set_names, fasta_file=open('output.fasta', 'w')):
+def variants_to_fasta(history_ids, fasta_file=open('output.fasta', 'w')):
     TB_LEN = 4410929  # length of H37Rv reference sequence. TODO: store Chromosome in DB and compute this
     ref_list = ['R'] * TB_LEN
     snp_positions = set()
     total_variant_count = 0
     snp_count = 0
-    for variant_set_name in variant_set_names:
-        variant_set = VariantSet.select(graph).where("_.name = '{}'".format(variant_set_name)).first()
+    for history_id in history_ids:
+        variant_set = VariantSet.select(graph).where("_.history_id = '{}'".format(history_id)).first()
         if variant_set is not None:
             for variant in variant_set.has_variant:
                 total_variant_count += 1
