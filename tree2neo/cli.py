@@ -39,7 +39,7 @@ def init(tree_dir, d, history_id, refdb_dir=None):
     build_relationships()
 
 
-def load_tree_from_vsets(email, history_ids, outputdir):
+def load_tree_from_vsets(email, history_ids, outputdir=None):
     dir_made = False
     if outputdir is None:
         outputdir = os.path.join(tempdir, 'ft_' + str(os.getpid()) + '_working')

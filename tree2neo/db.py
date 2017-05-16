@@ -57,7 +57,10 @@ def variants_to_fasta(history_ids, fasta_file=open('output.fasta', 'w')):
     total_variant_count = 0
     snp_count = 0
     for history_id in history_ids:
-        variant_set = VariantSet.select(graph).where("_.history_id = '{}'".format(history_id)).first()
+        if history_id = 'refvcf':  # hack because refvcf has not history ID
+            variant_set = VariantSet.select(graph).where("_.name = 'refvcf'").first()
+        else:
+            variant_set = VariantSet.select(graph).where("_.history_id = '{}'".format(history_id)).first()
         if variant_set is not None:
             for variant in variant_set.has_variant:
                 total_variant_count += 1
