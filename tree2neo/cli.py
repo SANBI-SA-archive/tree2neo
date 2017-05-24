@@ -42,7 +42,9 @@ def init(tree_dir, d, history_id, refdb_dir=None):
 def load_tree_from_vsets(email, history_ids, outputdir=None):
     dir_made = False
     if outputdir is None:
-        outputdir = os.path.join(gettempdir(), 'ft_' + str(os.getpid()) + '_working')
+        outputdir = os.path.join(gettempdir(), 'ft_' + str(os.getpid()) + '_' + email + '_working')
+        if os.path.isdir(outputdir):
+            shutil.rmtree(outputdir)
         os.mkdir(outputdir, 0o600)
         dir_made = True
     with NamedTemporaryFile(delete=False) as tmpfile:

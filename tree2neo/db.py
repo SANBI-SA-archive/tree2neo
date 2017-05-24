@@ -13,7 +13,7 @@ from Bio import SeqIO
 
 graph = Graph(host=getenv("DB", "thoba.sanbi.ac.za"), http_port=7474, bolt=True, password=getenv("NEO4J_PASSWORD", ""))
 
-watch("neo4j.bolt")
+# watch("neo4j.bolt")
 
 
 def create_tree_nodes(name, data, history_id):
