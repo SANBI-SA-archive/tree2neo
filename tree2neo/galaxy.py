@@ -3,8 +3,8 @@ import os.path
 from bioblend.galaxy import GalaxyInstance
 from .db import get_galaxy_api_key
 
-def get_gi(email):
-    api_key = get_galaxy_api_key(email)
+def get_gi(api_key):
+    # api_key = get_galaxy_api_key(email)
     if api_key is not None:
         gi = GalaxyInstance(url='http://ctbgx.sanbi.ac.za', key=api_key)
     else:
@@ -12,8 +12,8 @@ def get_gi(email):
     return gi
 
 
-def submit_fasttree_job(email, fasta_filename, history_name='working_history'):
-    gi = get_gi(email)
+def submit_fasttree_job(api_key, fasta_filename, history_name='working_history'):
+    gi = get_gi(api_key)
     if gi is not None:
         history = gi.histories.create_history(name=history_name)
         history_id = history['id']
@@ -28,7 +28,7 @@ def submit_fasttree_job(email, fasta_filename, history_name='working_history'):
 
 
 def get_job_state(email, job_id):
-    gi = get_gi(email)
+    gi = get_gi(api_key)
     job_state = gi.jobs.get_state(job_id)
     return job_state
 
@@ -39,7 +39,7 @@ def wait_on_output(email, job_id):
         job_state = get_job_state(email, job_id)
         sleep(1)
     if job_state == 'ok':
-        gi = get_gi(email)
+        gi = get_gi(api_key)
         if gi is not None:
             job_result = gi.jobs.show_job(job_id)
             # fasttree generates a nhx (newick tree) format output called output_tree
@@ -51,10 +51,10 @@ def wait_on_output(email, job_id):
 
 
 def fetch_output(email, output_path, output_id):
-    gi = get_gi(email)
+    gi = get_gi(api_key)
     if gi is not None:
         output_filename = os.path.join(output_path, output_id + '.nhx')
-        gi.datasets.download_dataset(output_id, file_path=output_path, wait_for_completion=True,
+        gi.datasets.download_dataset(output_id, file_path=output_filename, wait_for_completion=True,
                                      use_default_filename=False)
         return output_filename
     return None

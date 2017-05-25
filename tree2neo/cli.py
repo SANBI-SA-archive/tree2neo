@@ -39,10 +39,10 @@ def init(tree_dir, d, history_id, refdb_dir=None):
     build_relationships()
 
 
-def load_tree_from_vsets(email, history_ids, outputdir=None):
+def load_tree_from_vsets(api_key, history_ids, outputdir=None):
     dir_made = False
     if outputdir is None:
-        outputdir = os.path.join(gettempdir(), 'ft_' + str(os.getpid()) + '_' + email + '_working')
+        outputdir = os.path.join(gettempdir(), 'ft_' + str(os.getpid()) + '_' + api_key + '_working')
         if os.path.isdir(outputdir):
             shutil.rmtree(outputdir)
         os.mkdir(outputdir, 0o600)
@@ -52,13 +52,13 @@ def load_tree_from_vsets(email, history_ids, outputdir=None):
         if snp_count > 0:
             tmpfile.close()
             history_name = ','.join(history_ids)
-            run_result = submit_fasttree_job(email=email, fasta_filename=tmpfile.name, history_name=history_name)
+            run_result = submit_fasttree_job(api_key=api_key, fasta_filename=tmpfile.name, history_name=history_name)
             if run_result is not None:
                 if 'jobs' in run_result and len(run_result['jobs']) == 1:
                     job_id = run_result['jobs'][0]['id']
-                    output_id = wait_on_output(email=email, job_id=job_id)
+                    output_id = wait_on_output(api_key=api_key, job_id=job_id)
                     if output_id is not None:
-                        output_filename = fetch_output(email, outputdir, output_id)
+                        output_filename = fetch_output(api_key, outputdir, output_id)
                         if output_filename is not None:
                             tree = FastTree(history_name, tree_dir=outputdir)
                             tree.process()
@@ -69,11 +69,11 @@ def load_tree_from_vsets(email, history_ids, outputdir=None):
 
 
 @cli.command()
-@click.argument('email', type=str, required=True)
+@click.argument('api_key', type=str, required=True)
 @click.argument('history_ids', type=str, nargs=-1)
 @click.option('--outputdir', type=str)
-def tree_from_vsets(email, history_ids, outputdir):
-    load_tree_from_vsets(email, history_ids, outputdir)
+def tree_from_vsets(api_key, history_ids, outputdir):
+    load_tree_from_vsets(api_key, history_ids, outputdir)
 
 
 if __name__ == '__main__':

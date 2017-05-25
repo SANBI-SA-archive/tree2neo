@@ -21,6 +21,7 @@ def create_tree_nodes(name, data, history_id):
     Create VariantSet Nodes
     :return:
     """
+    print("creating tree for {}".format(history_id))
     v_set = FastTree(name=str(name), data=str(
         data), history_id=str(history_id))
     graph.create(v_set)
@@ -41,12 +42,12 @@ def build_relationships():
                 graph.push(t_set)
 
 
-def get_galaxy_api_key(email):
-    user = GalaxyUser.select(graph).where("_.email = '{}'".format(email)).first()
-    if user is None:
-        return None
-    else:
-        return user.user_key
+# def get_galaxy_api_key(api_key):
+    # user = GalaxyUser.select(graph).where("_.api_key = '{}'".format(email)).first()
+    # if user is None:
+    #     return None
+    # else:
+    #     return user.user_key
 
 
 def variants_to_fasta(history_ids, fasta_file=open('output.fasta', 'w')):
