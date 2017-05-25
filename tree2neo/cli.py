@@ -51,7 +51,7 @@ def load_tree_from_vsets(email, history_ids, outputdir=None):
         snp_count = variants_to_fasta(history_ids=history_ids, fasta_file=tmpfile)
         if snp_count > 0:
             tmpfile.close()
-            history_name = ','.join(vset_names)
+            history_name = ','.join(history_ids)
             run_result = submit_fasttree_job(email=email, fasta_filename=tmpfile.name, history_name=history_name)
             if run_result is not None:
                 if 'jobs' in run_result and len(run_result['jobs']) == 1:

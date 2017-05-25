@@ -51,7 +51,7 @@ def get_galaxy_api_key(email):
 
 
 def variants_to_fasta(history_ids, fasta_file=open('output.fasta', 'w')):
-    TB_LEN = 4410929  # length of H37Rv reference sequence. TODO: store Chromosome in DB and compute this
+    TB_LEN = 4411532  # length of H37Rv reference sequence. TODO: store Chromosome in DB and compute this
     ref_list = ['R'] * TB_LEN
     snp_positions = set()
     total_variant_count = 0
@@ -71,22 +71,25 @@ def variants_to_fasta(history_ids, fasta_file=open('output.fasta', 'w')):
                             break
                     else:
                         is_snp = True
-                        ref_list[variant.pos - 1] = variant.ref_allele
+                        try:
+                            ref_list[variant.pos - 1] = variant.ref_allele
+                        except IndexError as e:
+                            exit("IndexError at {}: {}".format(variant.pos - 1, variant))
                     if is_snp:
                         snp_positions.add(variant.pos)
 
-        sequences = []
-        snp_count = len(snp_positions)
-        for callset in variant_set.has_callsets:
-            seq_list = ref_list[:]
-            for call in callset.has_call:
-                if call.pos in snp_positions:
-                    seq_list[call.pos - 1] = call.alt_allele[0]
-            seq = ''.join([base for base in seq_list if base != 'R'])
-            assert len(seq) == snp_count, "sequence length does not match SNP count for {} (length {} count {})".format(
-                callset.name, len(seq), snp_count)
-            seq_record = SeqRecord(id=callset.name, description=variant_set.history_id, seq=Seq(seq))
-            sequences.append(seq_record)
+            sequences = []
+            snp_count = len(snp_positions)
+            for callset in variant_set.has_callsets:
+                seq_list = ref_list[:]
+                for call in callset.has_call:
+                    if call.pos in snp_positions:
+                        seq_list[call.pos - 1] = call.alt_allele[0]
+                seq = ''.join([base for base in seq_list if base != 'R'])
+                assert len(seq) == snp_count, "sequence length does not match SNP count for {} (length {} count {})".format(
+                    callset.name, len(seq), snp_count)
+                seq_record = SeqRecord(id=callset.name, description=variant_set.history_id, seq=Seq(seq))
+                sequences.append(seq_record)
 
     if snp_count > 0:
         ref_str = ''.join([base for base in ref_list if base != 'R'])
