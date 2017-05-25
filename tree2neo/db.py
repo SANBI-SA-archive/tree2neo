@@ -42,8 +42,7 @@ def build_relationships():
 
 
 def get_galaxy_api_key(email):
-    query = GalaxyUser.select(graph).where("_.email = '{}'".format(email))
-    user = query.first()
+    user = GalaxyUser.select(graph).where("_.email = '{}'".format(email)).first()
     if user is None:
         return None
     else:
