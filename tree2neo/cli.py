@@ -48,6 +48,7 @@ def load_tree_from_vsets(api_key, history_ids, outputdir=None):
         os.mkdir(outputdir, 0700)
         dir_made = True
     with NamedTemporaryFile(delete=False) as tmpfile:
+        print("tempfile:", tmpfile.name)
         snp_count = variants_to_fasta(history_ids=history_ids, fasta_file=tmpfile)
         if snp_count > 0:
             tmpfile.close()
