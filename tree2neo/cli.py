@@ -45,7 +45,7 @@ def load_tree_from_vsets(api_key, history_ids, outputdir=None):
         outputdir = os.path.join(gettempdir(), 'ft_' + str(os.getpid()) + '_' + api_key + '_working')
         if os.path.isdir(outputdir):
             shutil.rmtree(outputdir)
-        os.mkdir(outputdir, 0o600)
+        os.mkdir(outputdir, 0700)
         dir_made = True
     with NamedTemporaryFile(delete=False) as tmpfile:
         snp_count = variants_to_fasta(history_ids=history_ids, fasta_file=tmpfile)
