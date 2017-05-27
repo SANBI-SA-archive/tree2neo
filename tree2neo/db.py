@@ -50,12 +50,14 @@ def build_relationships():
     #     return user.user_key
 
 
-def variants_to_fasta(history_ids, fasta_file=open('output.fasta', 'w')):
+def variants_to_fasta(history_ids, fasta_file=None):
     TB_LEN = 4411532  # length of H37Rv reference sequence. TODO: store Chromosome in DB and compute this
     ref_list = ['R'] * TB_LEN
     snp_positions = set()
     total_variant_count = 0
     snp_count = 0
+    if fasta_file is None:
+        fasta_file = open('output.fasta', 'w')
     for history_id in history_ids:
         if history_id == 'refvcf':  # hack because refvcf has not history ID
             variant_set = VariantSet.select(graph).where("_.name = 'refvcf'").first()
