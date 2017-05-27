@@ -36,7 +36,7 @@ def get_job_state(api_key, job_id):
 def wait_on_output(api_key, job_id):
     job_state = 'waiting'
     while job_state != 'ok' and job_state != '':
-        job_state = get_job_state(email, job_id)
+        job_state = get_job_state(api_key, job_id)
         sleep(1)
     if job_state == 'ok':
         gi = get_gi(api_key)
