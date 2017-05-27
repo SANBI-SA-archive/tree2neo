@@ -1,7 +1,7 @@
 from time import sleep
 import os.path
 from bioblend.galaxy import GalaxyInstance
-from .db import get_galaxy_api_key
+# from .db import get_galaxy_api_key
 
 def get_gi(api_key):
     # api_key = get_galaxy_api_key(email)
