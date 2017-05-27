@@ -27,13 +27,13 @@ def submit_fasttree_job(api_key, fasta_filename, history_name='working_history')
     return None
 
 
-def get_job_state(email, job_id):
+def get_job_state(api_key, job_id):
     gi = get_gi(api_key)
     job_state = gi.jobs.get_state(job_id)
     return job_state
 
 
-def wait_on_output(email, job_id):
+def wait_on_output(api_key, job_id):
     job_state = 'waiting'
     while job_state != 'ok' and job_state != '':
         job_state = get_job_state(email, job_id)
@@ -50,7 +50,7 @@ def wait_on_output(email, job_id):
     return None
 
 
-def fetch_output(email, output_path, output_id):
+def fetch_output(api_key, output_path, output_id):
     gi = get_gi(api_key)
     if gi is not None:
         output_filename = os.path.join(output_path, output_id + '.nhx')
