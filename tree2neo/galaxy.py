@@ -8,7 +8,8 @@ from bioblend.galaxy import GalaxyInstance
 def get_gi(api_key):
     # api_key = get_galaxy_api_key(email)
     if api_key is not None:
-        gi = GalaxyInstance(url='http://ctbgx.sanbi.ac.za', key=api_key)
+        # 192.168.2.218 is ctbgx.sanbi.ac.za
+        gi = GalaxyInstance(url='http://192.168.2.218', key=api_key)
     else:
         gi = None
     return gi
