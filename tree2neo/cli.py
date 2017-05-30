@@ -1,3 +1,5 @@
+from __future__ import print_function
+import sys
 import os
 import os.path
 from shutil import rmtree
@@ -48,19 +50,23 @@ def load_tree_from_vsets(api_key, history_ids, outputdir=None):
         os.mkdir(outputdir, 0700)
         dir_made = True
     with NamedTemporaryFile(delete=False) as tmpfile:
-        print("tempfile:", tmpfile.name)
+        print("tempfile:", tmpfile.name, file=sys.stderr)
         snp_count = variants_to_fasta(history_ids=history_ids, fasta_file=tmpfile)
         if snp_count > 0:
             tmpfile.close()
             history_name = ','.join(history_ids)
+            print("submitting job to Galaxy", file=sys.stderr)
             run_result = submit_fasttree_job(api_key=api_key, fasta_filename=tmpfile.name, history_name=history_name)
+            print("Galaxy job submitted, result:", run_result, file=sys.stderr)
             if run_result is not None:
                 if 'jobs' in run_result and len(run_result['jobs']) == 1:
                     job_id = run_result['jobs'][0]['id']
                     output_id = wait_on_output(api_key=api_key, job_id=job_id)
                     if output_id is not None:
+                        print("fetching Galaxy output", file=sys.stderr)
                         output_filename = fetch_output(api_key, outputdir, output_id)
                         if output_filename is not None:
+                            print("loading FastTree node", file=sys.stderr)
                             tree = FastTree(history_name, tree_dir=outputdir)
                             tree.process()
                             build_relationships()

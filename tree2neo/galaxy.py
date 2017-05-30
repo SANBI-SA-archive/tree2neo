@@ -1,3 +1,5 @@
+from __future__ import print_function
+import sys
 from time import sleep
 import os.path
 from bioblend.galaxy import GalaxyInstance
@@ -34,16 +36,21 @@ def get_job_state(api_key, job_id):
 
 
 def wait_on_output(api_key, job_id):
-    job_state = 'waiting'
-    while job_state != 'ok' and job_state != '':
+    job_state = 'new'
+    good_job_states = set(('new', 'queued', 'running'))
+    while job_state != 'ok' and job_state != 'error' and job_state in good_job_states:
+        print('galaxy job state:', job_state, file=sys.stderr)
         job_state = get_job_state(api_key, job_id)
         sleep(1)
+    print("final Galaxy job state:", job_state, file=sys.stderr)
     if job_state == 'ok':
+        print('Galaxy job completed successfully', file=sys.stderr)
         gi = get_gi(api_key)
         if gi is not None:
             job_result = gi.jobs.show_job(job_id)
             # fasttree generates a nhx (newick tree) format output called output_tree
             if 'exit_code' in job_result and job_result['exit_code'] == 0:
+                print("job completed with exit code 0, all good")
                 if 'outputs' in job_result and 'output_tree' in job_result['outputs']:
                     tree_output_id = job_result['outputs']['output_tree']['id']
                     return tree_output_id
