@@ -5,7 +5,7 @@ import glob
 import time
 
 
-class FastTree(object):
+class NewickTree(object):
     """
     Handling Tree processing.
     """
