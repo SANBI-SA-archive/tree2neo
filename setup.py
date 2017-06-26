@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='tree2neo',
-    version='0.0.2',
+    version='0.0.3',
     description='Parses FastTree file and load it to the graph database.',
     keywords='neo4j,and fasttree',
     py_modules=['tree2neo'],
@@ -12,7 +12,8 @@ setup(
         'click',
         'bioservices',
         'py2neo',
-        'tqdm'
+        'tqdm',
+        'combat_tb_model'
     ],
     entry_points={
         'console_scripts': ['tree2neo=tree2neo.cli:cli']
