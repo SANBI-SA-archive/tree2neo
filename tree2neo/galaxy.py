@@ -26,7 +26,7 @@ def submit_fasttree_job(api_key, fasta_filename, history_name='working_history')
             run_result = gi.tools.run_tool(history_id, 'fasttree', dict(
                 input_alignment=dict(src='hda', id=uploaded_dataset_id)
             ))
-            return run_result
+            return (run_result, history_id)
     return None
 
 
@@ -66,3 +66,9 @@ def fetch_output(api_key, output_path, output_id):
                                      use_default_filename=False)
         return output_filename
     return None
+
+
+def delete_history(api_key, history_id):
+    gi = get_gi(api_key)
+    if gi is not None:
+        gi.delete_history(history_id, purge=True)

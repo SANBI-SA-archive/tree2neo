@@ -56,9 +56,10 @@ def load_tree_from_vsets(api_key, history_ids, outputdir=None):
             tmpfile.close()
             history_name = ','.join(history_ids)
             print("submitting job to Galaxy", file=sys.stderr)
-            run_result = submit_fasttree_job(api_key=api_key, fasta_filename=tmpfile.name, history_name=history_name)
+            result = submit_fasttree_job(api_key=api_key, fasta_filename=tmpfile.name, history_name=history_name)
             print("Galaxy job submitted, result:", run_result, file=sys.stderr)
-            if run_result is not None:
+            if result is not None:
+                (run_result, history_id) = result
                 if 'jobs' in run_result and len(run_result['jobs']) == 1:
                     job_id = run_result['jobs'][0]['id']
                     output_id = wait_on_output(api_key=api_key, job_id=job_id)
@@ -70,6 +71,7 @@ def load_tree_from_vsets(api_key, history_ids, outputdir=None):
                             tree = FastTree(history_name, tree_dir=outputdir)
                             tree.process()
                             build_relationships()
+                            delete_history(api_key=api_key, history_id=history_id)
             os.remove(tmpfile.name)
     if dir_made:
         rmtree(outputdir)
