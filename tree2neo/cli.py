@@ -44,22 +44,23 @@ def init(tree_dir, d, history_id, db_host, refdb_dir=None):
             exit("When running in Docker mode we need an output dir")
         docker = Docker(refdb_dir)
         docker.run()
-        db_host = 'localhost'
+        db_host = os.environ.get('DB', 'localhost')
         http_port = docker.http_port
         bolt_port = docker.bolt_port
     else:
         http_port = 7474
         bolt_port = 7687
-    tree = NewickTree(history_id, tree_dir=tree_dir)
-    tree.process()
-    db = GraphDb(host=db_host, password='', use_bolt=False,
+    db = GraphDb(host=os.environ.get('DB', 'localhost'), password='', use_bolt=False,
                  http_port=http_port, bolt_port=bolt_port)
     db.build_relationships()
-    d.stop()
+    tree = NewickTree(history_id, db, tree_dir=tree_dir)
+    tree.process()
+    if d:
+	d.stop()
 
 
 def load_tree_from_vsets(api_key, history_ids, outputdir=None,
-                         db_host='localhost',
+                         db_host=os.environ.get('DB', 'localhost'),
                          galaxy_url='http://192.168.2.218'):
     db = GraphDb(host=db_host, password='', use_bolt=False,
                  http_port=7474, bolt_port=7687)
@@ -99,7 +100,7 @@ def load_tree_from_vsets(api_key, history_ids, outputdir=None,
                                                        galaxy_url=galaxy_url)
                         if output_filename is not None:
                             print("loading FastTree node", file=sys.stderr)
-                            tree = NewickTree(history_name, tree_dir=outputdir)
+                            tree = NewickTree(history_name, db, tree_dir=outputdir)
                             tree.process()
                             db.build_relationships()
                             delete_history(api_key=api_key,
