@@ -12,8 +12,7 @@ setup(
         'click',
         'bioservices',
         'py2neo',
-        'tqdm',
-        'combat_tb_model'
+        'tqdm'
     ],
     entry_points={
         'console_scripts': ['tree2neo=tree2neo.cli:cli']
